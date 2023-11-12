@@ -2,6 +2,7 @@ import 'package:ap/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ap/widgets/gradient_button.dart';
 import 'package:ap/widgets/login_field.dart';
+import 'package:ap/project_screen.dart';
 // import 'package:ap/widgets/social_button.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,6 +14,14 @@ class LoginScreen extends StatelessWidget {
       MaterialPageRoute(builder: (context) => Sign_up_Screen()), 
     );
   }
+
+  void _navigateToHome(BuildContext context) {    
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()), 
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,6 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
               const GradientButton(),
               const SizedBox(height: 15),
-
               InkWell(
                 onTap: () {
                   _navigateToSign_up(context);
