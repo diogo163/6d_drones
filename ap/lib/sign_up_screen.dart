@@ -1,15 +1,43 @@
 import 'package:ap/login_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:ap/widgets/gradient_button2.dart';
 import 'package:ap/widgets/login_field.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:ap/post.dart';
+import 'dart:convert';
 
 class Sign_up_Screen extends StatelessWidget {
-  const Sign_up_Screen({Key? key}) : super(key: key);
 
-  void _navigateToLogin(BuildContext context) {    
+  String nome = "";
+  dynamic email = "";
+  String senha = "";
+  dynamic cnpj = "";
+
+  Sign_up_Screen({Key? key}) : super(key: key);
+
+  Future<Post> createPost(String email, String senha, String nome, String cnpj) async {
+    final uri = Uri.parse("http://127.0.0.1:8000/users");
+    final Map<String, dynamic> request = {
+      "nome": nome,
+      "email": email,
+      "cnpj": cnpj,
+      "senha": senha,
+    };
+
+    final response = await http.post(uri, body: request);
+
+    if (response.statusCode == 200){
+      return Post.fromJson(json.decode(response.body));
+    }else{
+      throw Exception('Failed to load post');
+    }
+  }
+
+
+  void _navigateToLogin(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()), 
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 
@@ -30,17 +58,31 @@ class Sign_up_Screen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 50),
-              const LoginField(hintText: 'Email'),
+              LoginField(hintText: 'Email', onTextChanged: (value) {
+                email = value;
+              }),
               const SizedBox(height: 15),
-              const LoginField(hintText: 'Senha'),
+              LoginField(hintText: 'Senha', onTextChanged: (value) {
+                senha = value;
+              }),
               const SizedBox(height: 15),
-              const LoginField(hintText: 'Número de celular'),
+              LoginField(hintText: 'Nome', onTextChanged: (value) {
+                nome = value;
+              }),
               const SizedBox(height: 15),
-              const LoginField(hintText: 'CPF'),
+              LoginField(hintText: 'CNPJ', onTextChanged: (value) {
+                cnpj = value;
+              }),
               const SizedBox(height: 20),
-              const GradientButton2(),
-              const SizedBox(height: 15),
-
+              GradientButton2(onPressed: () {
+                createPost(
+                  email,
+                  senha,
+                  nome,
+                  cnpj
+                );
+              }),
+              const SizedBox(height: 30),
               InkWell(
                 onTap: () {
                   _navigateToLogin(context);
@@ -52,6 +94,7 @@ class Sign_up_Screen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 30)
             ],
           ),
         ),

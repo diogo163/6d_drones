@@ -41,7 +41,7 @@ class MyDesktopBody extends StatelessWidget {
             // Barra dos projetos
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(              
+              child: Container(
                 width: 200,
                 color: Colors.deepPurple[300],
                 child: ListView.builder(
@@ -49,13 +49,13 @@ class MyDesktopBody extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Container(                            
+                          child: Container(
                             height: 150,
                             width: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Pallete.gradient3
-                              ),                            
+                              ),
                           ),
                         );
                       },

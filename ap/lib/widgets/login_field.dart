@@ -3,9 +3,12 @@ import 'package:ap/pallete.dart';
 
 class LoginField extends StatelessWidget {
   final String hintText;
+  final Function(String)? onTextChanged;
+
   const LoginField({
     Key? key,
     required this.hintText,
+    this.onTextChanged,
   }) : super(key: key);
 
   @override
@@ -15,6 +18,7 @@ class LoginField extends StatelessWidget {
         maxWidth: 400,
       ),
       child: TextFormField(
+        onChanged: onTextChanged,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(27),
           enabledBorder: OutlineInputBorder(
