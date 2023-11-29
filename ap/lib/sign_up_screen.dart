@@ -6,7 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:ap/post.dart';
 import 'dart:convert';
 
+
 class Sign_up_Screen extends StatelessWidget {
+
+  bool isNumeric(String? s) {
+  if (s == null) {
+    return false;
+  }
+  return (int.tryParse(s) != null);
+}
 
   String nome = "";
   dynamic email = "";
@@ -14,6 +22,7 @@ class Sign_up_Screen extends StatelessWidget {
   dynamic cnpj = "";
 
   Sign_up_Screen({Key? key}) : super(key: key);
+
 
   Future<Post> createPost(String email, String senha, String nome, String cnpj) async {
     final uri = Uri.parse("http://127.0.0.1:8000/users");
@@ -41,64 +50,117 @@ class Sign_up_Screen extends StatelessWidget {
     );
   }
 
+  final _formKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              Image.asset('assets/images/logo.png'),
-              const SizedBox(height: 30),
-              const Text(
-                'Registre-se',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 50,
-                ),
-              ),
-              const SizedBox(height: 50),
-              LoginField(hintText: 'Email', onTextChanged: (value) {
-                email = value;
-              }),
-              const SizedBox(height: 15),
-              LoginField(hintText: 'Senha', onTextChanged: (value) {
-                senha = value;
-              }),
-              const SizedBox(height: 15),
-              LoginField(hintText: 'Nome', onTextChanged: (value) {
-                nome = value;
-              }),
-              const SizedBox(height: 15),
-              LoginField(hintText: 'CNPJ', onTextChanged: (value) {
-                cnpj = value;
-              }),
-              const SizedBox(height: 20),
-              GradientButton2(onPressed: () {
-                createPost(
-                  email,
-                  senha,
-                  nome,
-                  cnpj
-                );
-              }),
-              const SizedBox(height: 30),
-              InkWell(
-                onTap: () {
-                  _navigateToLogin(context);
-                },
-                child: Text(
-                  'Já tem uma conta? Logar',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 71, 141, 199),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Image.asset('assets/images/logo.png'),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Registre-se',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 50),
+                  LoginField(hintText: 'Email', onTextChanged: (value) {
+                    email = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Por favor insira um e-mail';
+                    }
+                    else if (!value.endsWith("@gmail.com")) {
+                      return 'Por favor digite um email válido';
+                    }
+                      return null;
+                  },
+                  ),
+                  const SizedBox(height: 15),
+                  LoginField(hintText: 'Senha', onTextChanged: (value) {
+                    senha = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Por favor insira a senha';
+                    }
+                    else if (value.length < 8) {
+                      return 'A senha deve ter no mínimo 8 caracteres';
+                    }
+                      return null;
+                  },
+                  isPassword: true,
+                  ),
+                  const SizedBox(height: 15),
+                  LoginField(hintText: 'Nome', onTextChanged: (value) {
+                    nome = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Por favor insira o nome';
+                    }
+                      return null;
+                  },
+                  ),
+                  const SizedBox(height: 15),
+                  LoginField(hintText: 'CNPJ', onTextChanged: (value) {
+                    cnpj = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Por favor insira o CNPJ';
+                    }
+                    else if (value.length != 14){
+                      return 'O CNPJ deve ter 14 digitos (somente números)';
+                    }
+                    else if (!isNumeric(value)){
+                      return 'O CNPJ deve conter apenas números';
+                    }
+                      return null;
+                  },
+                  ),
+                  const SizedBox(height: 20),
+                  GradientButton2(onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      print("Valido");
+                      createPost(
+                        email,
+                        senha,
+                        nome,
+                        cnpj
+                      );
+                    }
+                    else {
+                      print("invalido");
+                    }
+                  }),
+                  const SizedBox(height: 30),
+                  InkWell(
+                    onTap: () {
+                      _navigateToLogin(context);
+                    },
+                    child: Text(
+                      'Já tem uma conta? Logar',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 71, 141, 199),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30)
+                ],
               ),
-              const SizedBox(height: 30)
-            ],
+            ),
           ),
         ),
-      ),
     );
   }
 }
