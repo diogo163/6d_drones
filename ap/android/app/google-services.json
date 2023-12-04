@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251146862934",
+    "project_id": "d-drone-d9b66",
+    "storage_bucket": "d-drone-d9b66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251146862934:android:538a8e79e7a4c35df196f7",
+        "android_client_info": {
+          "package_name": "com.example.ap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8xO6hs-JWDPn--UL61fScF5-vScsZFqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
